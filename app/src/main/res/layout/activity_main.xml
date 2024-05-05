@@ -8,11 +8,75 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/toolbar_content"
+            android:background="@color/light_gray"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_gray"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_rooms_recycler_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Main Activity"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+        android:layout_below="@+id/appbar_container"
+        android:layout_above="@+id/btn_container"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/join_action_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:icon="@drawable/add"
+            app:iconPadding="5dp"
+            app:iconTint="@color/white"
+            android:text="@string/join"
+            android:textColor="@color/white"
+            android:backgroundTint="@android:color/darker_gray"
+            app:rippleColor="@color/white"/>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_action_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:icon="@drawable/add"
+            app:iconPadding="5dp"
+            app:iconTint="@color/white"
+            android:text="@string/add"
+            android:textColor="@color/white"
+            android:backgroundTint="@android:color/darker_gray"
+            app:rippleColor="@color/white"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
