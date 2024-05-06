@@ -7,4 +7,12 @@
     <string name="name_hint">name</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="create_btn">Create</string>
+    <string name="join_btn">Join</string>
+    <string name="add">Create a chat</string>
+    <string name="join">Join a chat</string>
+    <string name="toolbar_content">Active Chat Rooms</string>
+    <string name="room_name">Room Name</string>
+    <string name="room_ID">Room ID</string>
+    <string name="msg_hint">Enter a message</string>
 </resources>
