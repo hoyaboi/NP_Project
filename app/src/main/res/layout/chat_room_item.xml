@@ -8,17 +8,19 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="4dp"
+    app:cardElevation="5dp"
     app:cardCornerRadius="8dp">
 
     <TextView
         android:id="@+id/room_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:padding="16dp"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
         android:textColor="@color/black"
-        android:background="@color/light_gray"
+        android:background="@color/white"
         android:gravity="center_vertical"/>
 
 </androidx.cardview.widget.CardView>

@@ -17,6 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="10dp"
             android:background="@color/light_gray"/>
 
         <View
@@ -61,7 +62,7 @@
             android:src="@drawable/send"
             android:backgroundTint="@color/white"
             app:rippleColor="@android:color/darker_gray"
-            android:elevation="0dp"/>
+            app:elevation="1dp" />
 
     </LinearLayout>
 
