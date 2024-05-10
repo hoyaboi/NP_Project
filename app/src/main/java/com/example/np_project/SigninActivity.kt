@@ -51,7 +51,8 @@ class SigninActivity : AppCompatActivity() {
         if(email.isNotEmpty() && pwd.isNotEmpty()) {
             auth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(this) { task ->
                 if(task.isSuccessful) {
-                    startActivity(Intent(this, MainActivity::class.java))
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
                 }

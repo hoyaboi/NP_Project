@@ -15,4 +15,5 @@
     <string name="room_name">Room Name</string>
     <string name="room_ID">Room ID</string>
     <string name="msg_hint">Enter a message</string>
+    <string name="me">Me</string>
 </resources>

@@ -77,9 +77,13 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val chatRooms = mutableListOf<ChatRoom>()
                 for (data in snapshot.children) {
-                    val chatRoom = data.getValue(ChatRoom::class.java)
+                    val chatRoom = data.getValue(ChatRoom::class.java)?.apply {
+                        messages = data.child("messages").children.map { msgSnapshot ->
+                            msgSnapshot.key to msgSnapshot.getValue(Message::class.java)
+                        }.toMap(hashMapOf()) as HashMap<String, Message>  // 메시지 변환
+                    }
                     chatRoom?.let {
-                        if(it.participants[curUserUid] == true) {
+                        if (it.participants[curUserUid] == true) {
                             chatRooms.add(it)
                         }
                     }

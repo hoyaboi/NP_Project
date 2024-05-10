@@ -27,6 +27,14 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/message_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/appbar_container"
+        android:layout_above="@+id/send_container"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"/>
 
     <View
         android:layout_width="match_parent"
