@@ -16,4 +16,5 @@
     <string name="room_ID">Room ID</string>
     <string name="msg_hint">Enter a message</string>
     <string name="me">Me</string>
+    <string name="send">Send</string>
 </resources>

@@ -49,7 +49,7 @@ class MessageAdapter(
                 }
             }
 
-            // 마지막 아이템에 마진 추가
+            // 마지막 메시지에 마진 추가
             val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
             if (position == itemCount - 1) {  // 마지막 아이템
                 layoutParams.bottomMargin = 10.dpToPx(holder.itemView.context)  // 10dp 마진

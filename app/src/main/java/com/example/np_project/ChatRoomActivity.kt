@@ -27,7 +27,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var roomNameToolBar: MaterialToolbar
     private lateinit var messageEditText: TextInputEditText
-    private lateinit var sendButton: FloatingActionButton
+    private lateinit var sendButton: MaterialButton
     private lateinit var messagesRecyclerView: RecyclerView
     private lateinit var messageAdapter: MessageAdapter
     private var messagesList = mutableListOf<Message>()

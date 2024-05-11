@@ -53,24 +53,25 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/msg_edittext"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_weight="7"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
             android:hint="@string/msg_hint"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/send_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/send"
+            android:textSize="18sp"
             android:src="@drawable/send"
-            android:backgroundTint="@color/white"
-            app:rippleColor="@android:color/darker_gray"
-            app:elevation="1dp" />
+            android:backgroundTint="@android:color/darker_gray"
+            app:rippleColor="@color/white"/>
 
     </LinearLayout>
 
