@@ -12,56 +12,76 @@ import java.util.Date
 import java.util.Locale
 
 class MessageAdapter(
-    private var messages: List<Message>,
+    var items: List<ChatItem>,
     private val currentUserId: String,
     private val database: DatabaseReference
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_MESSAGE_SENT = 1
     private val VIEW_TYPE_MESSAGE_RECEIVED = 2
+    private val VIEW_TYPE_DATE = 3
 
-    override fun getItemCount() = messages.size
+    override fun getItemCount() = items.size
 
-    override fun getItemViewType(position: Int): Int {
-        val message = messages[position]
-        return if (message.uid == currentUserId) VIEW_TYPE_MESSAGE_SENT else VIEW_TYPE_MESSAGE_RECEIVED
+    override fun getItemViewType(position: Int): Int = when (val item = items[position]) {
+        is ChatItem.DateItem -> VIEW_TYPE_DATE
+        is ChatItem.MessageItem -> if (item.message.uid == currentUserId) VIEW_TYPE_MESSAGE_SENT else VIEW_TYPE_MESSAGE_RECEIVED
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = if (viewType == VIEW_TYPE_MESSAGE_SENT) {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_message_sent, parent, false)
-        } else {
-            LayoutInflater.from(parent.context).inflate(R.layout.item_message_received, parent, false)
+        return when (viewType) {
+            VIEW_TYPE_DATE -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_date, parent, false)
+                DateViewHolder(view)
+            }
+            VIEW_TYPE_MESSAGE_SENT -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message_sent, parent, false)
+                MessageViewHolder(view)
+            }
+            VIEW_TYPE_MESSAGE_RECEIVED -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message_received, parent, false)
+                MessageViewHolder(view)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
         }
-        return MessageViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val message = messages[position]
-        if (holder is MessageViewHolder) {
-            holder.bind(message)
+        when (holder) {
+            is DateViewHolder -> holder.bind((items[position] as ChatItem.DateItem).date)
+            is MessageViewHolder -> {
+                val messageItem = items[position] as ChatItem.MessageItem
+                holder.bind(messageItem.message)
 
-            // 사용자 이름 불러오기
-            database.child("Users").child(message.uid ?: "").get().addOnSuccessListener { dataSnapshot ->
-                val userName = dataSnapshot.child("name").getValue(String::class.java)
-                if (getItemViewType(position) == VIEW_TYPE_MESSAGE_RECEIVED) {
-                    holder.setSenderName(userName ?: "Unknown")
+                // 사용자 이름 불러오기
+                database.child("Users").child(messageItem.message.uid ?: "").get().addOnSuccessListener { dataSnapshot ->
+                    val userName = dataSnapshot.child("name").getValue(String::class.java)
+                    if (getItemViewType(position) == VIEW_TYPE_MESSAGE_RECEIVED) {
+                        holder.setSenderName(userName ?: "Unknown")
+                    }
                 }
-            }
 
-            // 마지막 메시지에 마진 추가
-            val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-            if (position == itemCount - 1) {  // 마지막 아이템
-                layoutParams.bottomMargin = 10.dpToPx(holder.itemView.context)  // 10dp 마진
-            } else {
-                layoutParams.bottomMargin = 0  // 다른 아이템은 마진 없음
+                // 마지막 메시지에 마진 추가
+                val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+                if (position == itemCount - 1) {  // 마지막 아이템
+                    layoutParams.bottomMargin = 10.dpToPx(holder.itemView.context)  // 10dp 마진
+                } else {
+                    layoutParams.bottomMargin = 0  // 다른 아이템은 마진 없음
+                }
+                holder.itemView.layoutParams = layoutParams
             }
-            holder.itemView.layoutParams = layoutParams
         }
     }
 
     private fun Int.dpToPx(context: Context): Int {
         return (this * context.resources.displayMetrics.density).toInt()
+    }
+
+    class DateViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val dateTextView: TextView = view.findViewById(R.id.date_text)
+        fun bind(date: String) {
+            dateTextView.text = date
+        }
     }
 
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {

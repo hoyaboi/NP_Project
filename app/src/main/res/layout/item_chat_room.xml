@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="5dp"
+    app:cardElevation="3dp"
     app:cardCornerRadius="8dp">
 
     <TextView
@@ -16,9 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:paddingStart="20dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:textColor="@color/black"
         android:background="@color/white"
         android:gravity="center_vertical"/>

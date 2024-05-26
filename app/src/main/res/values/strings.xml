@@ -2,6 +2,7 @@
     <string name="app_name">np_project</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_out">Sing Out</string>
     <string name="id_hint">email</string>
     <string name="pwd_hint">password</string>
     <string name="name_hint">name</string>
@@ -13,8 +14,18 @@
     <string name="join">Join a chat</string>
     <string name="toolbar_content">Active Chat Rooms</string>
     <string name="room_name">Room Name</string>
+    <string name="room_name2">Room Name :</string>
     <string name="room_ID">Room ID</string>
+    <string name="room_ID2">Room ID :</string>
     <string name="msg_hint">Enter a message</string>
     <string name="me">Me</string>
     <string name="send">Send</string>
+    <string name="date">dd/mm/yyyy</string>
+    <string name="side_menu">Key</string>
+    <string name="nav_header">Room Information</string>
+    <string name="input_key">Input your message key</string>
+    <string name="key_setting">Message Key Setting</string>
+    <string name="save_key">Save or Update the Key</string>
+    <string name="copy_room_id">Copy the Room ID</string>
+    <string name="leave_room">Leave the Current Room</string>
 </resources>

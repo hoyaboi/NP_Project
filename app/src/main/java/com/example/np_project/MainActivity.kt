@@ -1,5 +1,6 @@
 package com.example.np_project
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -26,11 +28,13 @@ import com.google.firebase.database.ktx.database
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
-
     private lateinit var chatRoomsRecyclerView: RecyclerView
     private lateinit var chatRoomAdapter: ChatRoomAdapter
     private lateinit var joinFloatingButton: ExtendedFloatingActionButton
     private lateinit var createFloatingButton: ExtendedFloatingActionButton
+    private lateinit var signOutMaterialButton: MaterialButton
+
+    private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +56,8 @@ class MainActivity : AppCompatActivity() {
         joinFloatingButton = findViewById(R.id.join_action_btn)
         createFloatingButton = findViewById(R.id.add_action_btn)
         chatRoomsRecyclerView = findViewById(R.id.chat_rooms_recycler_view)
+        signOutMaterialButton = findViewById(R.id.signout_button)
+
         chatRoomAdapter = ChatRoomAdapter(emptyList()) { chatRoom ->
             Log.d("MainActivity", "Room ID: ${chatRoom.rID}") // 로그로 ID 확인
             val intent = Intent(this, ChatRoomActivity::class.java)
@@ -68,6 +74,10 @@ class MainActivity : AppCompatActivity() {
         }
         createFloatingButton.setOnClickListener {
             startActivity(Intent(this, CreateChatActivity::class.java))
+        }
+        signOutMaterialButton.setOnClickListener {
+            auth.signOut()
+            startActivity(Intent(this, SigninActivity::class.java))
         }
     }
 
@@ -91,10 +101,19 @@ class MainActivity : AppCompatActivity() {
                 chatRoomAdapter.updateChatRooms(chatRooms)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@MainActivity, "Failed to load chat rooms", Toast.LENGTH_SHORT).show()
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            finishAffinity()
+            return
+        } else {
+            Toast.makeText(this, "Press the back button again to close the app", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 
 }

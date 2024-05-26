@@ -17,3 +17,8 @@ data class Message(
     var message: String? = null,
     var timestamp: Long? = null
 )
+
+sealed class ChatItem {
+    data class MessageItem(val message: Message) : ChatItem()
+    data class DateItem(val date: String) : ChatItem()
+}
