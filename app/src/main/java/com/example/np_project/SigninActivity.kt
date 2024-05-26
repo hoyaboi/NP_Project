@@ -1,5 +1,6 @@
 package com.example.np_project
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -11,11 +12,12 @@ import com.google.firebase.auth.FirebaseAuth
 
 class SigninActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-
     private lateinit var emailEditText: TextInputEditText
     private lateinit var pwdEditText: TextInputEditText
     private lateinit var signInButton: MaterialButton
     private lateinit var signUpButton: MaterialButton
+
+    private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,5 +62,16 @@ class SigninActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Enter your email or password", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            finishAffinity()
+            return
+        } else {
+            Toast.makeText(this, "Press the back button again to close the app", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
     }
 }
