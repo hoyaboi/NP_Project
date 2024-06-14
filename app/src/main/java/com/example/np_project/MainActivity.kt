@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import com.google.firebase.database.ktx.database
 
+// 메인 액티비티 클래스
 class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private var backPressedTime: Long = 0
 
+    // 액티비티가 생성될 때 호출
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -47,11 +49,14 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
+        // UI 컴포넌트 초기화 및 이벤트 리스너 설정
         setupViews()
         setupListeners()
+        // 채팅방 로드
         loadChatRooms()
     }
 
+    // UI 컴포넌트 초기화 함수
     private fun setupViews() {
         joinFloatingButton = findViewById(R.id.join_action_btn)
         createFloatingButton = findViewById(R.id.add_action_btn)
@@ -68,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         chatRoomsRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
+    // 버튼 클릭 리스너 설정 함수
     private fun setupListeners() {
         joinFloatingButton.setOnClickListener {
             startActivity(Intent(this, JoinChatActivity::class.java))
@@ -81,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 채팅방 로드 함수
     private fun loadChatRooms() {
         val curUserUid = auth.currentUser?.uid
         database.child("chatRooms").addValueEventListener(object : ValueEventListener {
@@ -105,16 +112,16 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // 백 버튼 두 번 클릭 시 앱 종료
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            finishAffinity()
+            finishAffinity() // 앱 종료
             return
         } else {
+            // 백 버튼 한 번 클릭 시 토스트 메시지 표시
             Toast.makeText(this, "Press the back button again to close the app", Toast.LENGTH_SHORT).show()
         }
         backPressedTime = System.currentTimeMillis()
     }
-
 }
-

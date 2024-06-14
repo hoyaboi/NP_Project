@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// 메시지 리스트를 매개변수로 받는 MessageAdapter 클래스 정의
 class MessageAdapter(
     var items: List<ChatItem>,
     private val currentUserId: String,
@@ -21,13 +22,16 @@ class MessageAdapter(
     private val VIEW_TYPE_MESSAGE_RECEIVED = 2
     private val VIEW_TYPE_DATE = 3
 
+    // 아이템 개수 반환
     override fun getItemCount() = items.size
 
+    // 각 아이템의 뷰 타입을 반환
     override fun getItemViewType(position: Int): Int = when (val item = items[position]) {
         is ChatItem.DateItem -> VIEW_TYPE_DATE
         is ChatItem.MessageItem -> if (item.message.uid == currentUserId) VIEW_TYPE_MESSAGE_SENT else VIEW_TYPE_MESSAGE_RECEIVED
     }
 
+    // ViewHolder 생성 시 호출
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_DATE -> {
@@ -46,6 +50,7 @@ class MessageAdapter(
         }
     }
 
+    // ViewHolder에 데이터를 바인딩할 때 호출
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is DateViewHolder -> holder.bind((items[position] as ChatItem.DateItem).date)
@@ -73,10 +78,12 @@ class MessageAdapter(
         }
     }
 
+    // dp 단위를 px 단위로 변환하는 함수
     private fun Int.dpToPx(context: Context): Int {
         return (this * context.resources.displayMetrics.density).toInt()
     }
 
+    // 날짜 ViewHolder 클래스 정의
     class DateViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val dateTextView: TextView = view.findViewById(R.id.date_text)
         fun bind(date: String) {
@@ -84,6 +91,7 @@ class MessageAdapter(
         }
     }
 
+    // 메시지 ViewHolder 클래스 정의
     class MessageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val textView: TextView = view.findViewById(R.id.text_message_body)
         private val dateView: TextView = view.findViewById(R.id.message_date)

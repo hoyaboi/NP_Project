@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+// 채팅방 액티비티 클래스
 class ChatRoomActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
@@ -56,6 +57,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private lateinit var keyEditText: TextInputEditText
     private lateinit var saveKeyButton: MaterialButton
 
+    // 액티비티가 생성될 때 호출
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
@@ -69,12 +71,14 @@ class ChatRoomActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
 
+        // UI 컴포넌트 초기화 및 이벤트 리스너 설정
         setupViews()
         setupListeners()
         loadRoom()
         loadMessages()
     }
 
+    // UI 컴포넌트 초기화 함수
     private fun setupViews() {
         roomNameToolBar = findViewById(R.id.toolbar)
         messageEditText = findViewById(R.id.msg_edittext)
@@ -97,6 +101,7 @@ class ChatRoomActivity : AppCompatActivity() {
         saveKeyButton = headerView.findViewById(R.id.save_key_button)
     }
 
+    // 버튼 클릭 리스너 설정 함수
     private fun setupListeners() {
         sendButton.setOnClickListener {
             val messageText = messageEditText.text.toString().trim()
@@ -152,6 +157,7 @@ class ChatRoomActivity : AppCompatActivity() {
         }
     }
 
+    // 채팅방 정보 로드 함수
     private fun loadRoom() {
         database.child("chatRooms").child(roomID!!).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -175,6 +181,7 @@ class ChatRoomActivity : AppCompatActivity() {
         })
     }
 
+    // 메시지 로드 함수
     private fun loadMessages() {
         database.child("chatRooms").child(roomID!!).child("messages").addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
@@ -209,6 +216,7 @@ class ChatRoomActivity : AppCompatActivity() {
         })
     }
 
+    // 메시지 전송 함수
     private fun sendMessage(message: Message) {
         val roomID = intent.getStringExtra("roomID") ?: return
         database.child("chatRooms").child(roomID).child("messages").push().setValue(message)
@@ -218,6 +226,7 @@ class ChatRoomActivity : AppCompatActivity() {
             }
     }
 
+    // 같은 날인지 확인하는 함수
     private fun isSameDay(timestamp1: Long?, timestamp2: Long?): Boolean {
         val calendar1 = Calendar.getInstance()
         calendar1.timeInMillis = timestamp1 ?: return false
@@ -227,17 +236,20 @@ class ChatRoomActivity : AppCompatActivity() {
                 calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR)
     }
 
+    // 키를 저장하는 함수
     private fun saveKeyToStorage(key: String) {
         val sharedPreferences = getSharedPreferences("ChatRoomPreferences", MODE_PRIVATE)
         sharedPreferences.edit().putString("room_key_$roomID", key).apply()
         Toast.makeText(this, "Key saved successfully", Toast.LENGTH_SHORT).show()
     }
 
+    // 저장된 키를 불러오는 함수
     private fun getKeyFromStorage(): String? {
         val sharedPreferences = getSharedPreferences("ChatRoomPreferences", MODE_PRIVATE)
         return sharedPreferences.getString("room_key_$roomID", "")
     }
 
+    // 메시지 암호화 함수
     private fun encryptMessage(message: String, key: String?): String {
         if (key.isNullOrEmpty()) {
             return message  // 키가 없는 경우 원본 메시지 반환
@@ -248,6 +260,7 @@ class ChatRoomActivity : AppCompatActivity() {
         }.joinToString("")
     }
 
+    // 메시지 복호화 함수
     private fun decryptMessage(encryptedMessage: String, key: String?): String {
         return if (key.isNullOrEmpty()) {
             encryptedMessage  // 키가 없는 경우 암호화된 메시지 반환
@@ -256,6 +269,7 @@ class ChatRoomActivity : AppCompatActivity() {
         }
     }
 
+    // 채팅방 나가기 함수
     private fun leaveRoom() {
         val userUID = auth.currentUser?.uid ?: return
         // Firebase에서 현재 사용자의 UID 제거
@@ -267,5 +281,4 @@ class ChatRoomActivity : AppCompatActivity() {
                 Toast.makeText(this, "Failed to leave the room: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
-
 }
